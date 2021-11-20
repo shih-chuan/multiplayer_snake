@@ -1,0 +1,20 @@
+{
+  "name": "multiplayer_snake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "socket.io": "^4.4.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  },
+  "scripts": {
+    "test": "nodemon server.js",
+    "start": "nodemon server.js"
+  },
+  "author": "shih-chuan",
+  "license": "ISC"
+}
