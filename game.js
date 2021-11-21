@@ -42,26 +42,35 @@ const createGameState = () => {
 
 const gameLoop = (state) => {
     if(!state) return;
-    console.log(state);
     const player1 = state.players[0];
     const player2 = state.players[1];
-
-    console.log('inloop');
 
     player1.pos.x += player1.vel.x;
     player1.pos.y += player1.vel.y;
     player2.pos.x += player2.vel.x;
     player2.pos.y += player2.vel.y;
 
-
-    if(player1.pos.x < 0 || player1.pos.x > GRID_SIZE || player1.pos.y < 0 || player1.pos.y > GRID_SIZE) {
-        return 2;
+    if(player1.pos.x < 0){
+        player1.pos.x = player1.pos.x + GRID_SIZE;
+    }else if(player1.pos.x >= GRID_SIZE){
+        player1.pos.x = 0;
+    }
+    if(player1.pos.y < 0){
+        player1.pos.y = player1.pos.y + GRID_SIZE;
+    }else if(player1.pos.y >= GRID_SIZE){
+        player1.pos.y = 0;
+    }
+    if(player2.pos.x < 0){
+        player2.pos.x = player2.pos.x + GRID_SIZE;
+    }else if(player2.pos.x >= GRID_SIZE){
+        player2.pos.x = 0;
+    }
+    if(player2.pos.y < 0){
+        player2.pos.y = player2.pos.y + GRID_SIZE;
+    }else if(player2.pos.y >= GRID_SIZE){
+        player2.pos.y = 0;
     }
 
-    if(player2.pos.x < 0 || player2.pos.x > GRID_SIZE || player2.pos.y < 0 || player2.pos.y > GRID_SIZE) {
-        console.log('player2 dead');
-        return 1;
-    }
     if(state.food.x == player1.pos.x && state.food.y == player1.pos.y) {
         player1.snake.push({...player1.pos});
         player1.pos.x += player1.vel.x;
@@ -78,9 +87,11 @@ const gameLoop = (state) => {
     //往前一步
     if(player1.vel.x || player1.vel.y) {
         //撞到自己 => 輸了
-        for(let cell of player1.snake){
-            if(cell.x == player1.pos.x && cell.y == player1.pos.y) {
-                return 2;
+        for(let player of state.players){
+            for(let cell of player.snake){
+                if(cell.x == player1.pos.x && cell.y == player1.pos.y) {
+                    return 2;
+                }
             }
         }
         player1.snake.push({...player1.pos});
@@ -90,10 +101,11 @@ const gameLoop = (state) => {
     //往前一步
     if(player2.vel.x || player2.vel.y) {
         //撞到自己 => 輸了
-        for(let cell of player2.snake){
-            if(cell.x == player2.pos.x && cell.y == player2.pos.y) {
-                console.log('player2 dead');
-                return 1;
+        for(let player of state.players){
+            for(let cell of player.snake){
+                if(cell.x == player2.pos.x && cell.y == player2.pos.y) {
+                    return 1;
+                }
             }
         }
         player2.snake.push({...player2.pos});
